@@ -1,0 +1,48 @@
+/* 1. Убираем отступы и делаем box-sizing универсальным */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* 2. Устанавливаем высоту и ширину на 100% для корневых элементов */
+html,
+body,
+#main {
+  height: 100%;
+  width: 100%;
+}
+
+/* 3. Наследуем шрифты для форм */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* 4. Убираем стандартное оформление ссылок */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* 5. Сброс стилей списков */
+ul,
+ol {
+  list-style: none;
+}
+
+/* 6. Убираем обводку у кнопок при клике в браузере */
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+/* 7. Плавный скролл */
+html {
+  scroll-behavior: smooth;
+}

@@ -1,0 +1,26 @@
+.root__wrapper {
+  display: flex;
+  padding: 20px;
+  height: 100%;
+}
+
+.root__nav {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-right: 20px;
+  font-size: 20px;
+}
+
+.root__nav-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.root__outlet {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
