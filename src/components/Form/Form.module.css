@@ -1,0 +1,40 @@
+.form {
+  width: 350px;
+  height: 400px;
+  padding: 20px;
+  border-radius: 10px;
+  background: #ff7878;
+}
+
+.form__name {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px 0 30px;
+}
+.form__password {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form__label {
+  text-align: center;
+}
+.form__input {
+  padding: 5px;
+  border-radius: 10px;
+}
+.form__button {
+  display: block;
+  width: 200px;
+  height: 50px;
+  border: 1px solid #000;
+  border-radius: 10px;
+  margin: 60px auto 10px;
+}
+
+.form__link {
+  display: block;
+  text-align: center;
+}

@@ -1,3 +1,5 @@
+import Form from '@/components/Form/Form'
+// eslint-disable-next-line import/order
 import { createLazyFileRoute } from '@tanstack/react-router'
 
 export const Route = createLazyFileRoute('/login')({
@@ -5,5 +7,11 @@ export const Route = createLazyFileRoute('/login')({
 })
 
 function RouteComponent() {
-  return <div></div>
+  return (
+    <Form
+      textButton={'Войти'}
+      textLink="Зарегистрироваться"
+      URLLink="/registration"
+    />
+  )
 }

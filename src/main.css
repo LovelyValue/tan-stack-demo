@@ -15,12 +15,13 @@ body,
   width: 100%;
 }
 
-/* 3. Наследуем шрифты для форм */
+/* 3.формы */
 input,
 button,
 textarea,
 select {
   font: inherit;
+  border: none;
 }
 
 /* 4. Убираем стандартное оформление ссылок */

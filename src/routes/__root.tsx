@@ -3,7 +3,7 @@ import styles from '../styles/root.module.css'
 
 export const Route = createRootRoute({
   component: () => (
-    <div className={styles['root__wrapper']}>
+    <div className={styles['root']}>
       <ul className={styles['root__nav']}>
         <li className={styles['root__nav-top']}>
           <Link to="/">TanStack Demo</Link>
