@@ -4,7 +4,14 @@ import { FormErrors } from '../FormErrors/FormErrors'
 import styles from './Form.module.css'
 import type { FormProps } from './Form.props'
 
-const Form: React.FC<FormProps> = ({ textButton, textLink, URLLink }) => {
+const Form: React.FC<FormProps> = ({
+  textButton,
+  textLink,
+  URLLink,
+  validatePassword,
+  validateEmail,
+}) => {
+  // Управление формой
   const form = useForm({
     defaultValues: {
       email: '',
@@ -24,69 +31,66 @@ const Form: React.FC<FormProps> = ({ textButton, textLink, URLLink }) => {
         form.handleSubmit()
       }}
     >
-      <form.Field
-        name="email"
-        validators={{
-          onChange: ({ value }) => {
-            console.log(value)
-          },
-        }}
-      >
-        {(field) => (
-          <div className={styles['form__name']}>
-            <label className={styles['form__label']} htmlFor={field.name}>
-              Email
-            </label>
-            <input
-              className={styles['form__input']}
-              placeholder="Введите Email"
-              id={field.name}
-              name={field.name}
-              value={field.state.value}
-              onChange={(e) => {
-                field.handleChange(e.target.value)
-              }}
-            />
-          </div>
-        )}
-      </form.Field>
-      <form.Field
-        name="password"
-        validators={{
-          onChange: ({ value }) => {
-            const errors = []
-            if (!/[A-Z]/.test(value))
-              errors.push('Пароль должен содержать заглавную букву')
-            if (!/[0-9]/.test(value))
-              errors.push('Пароль должен содержать цифру')
-            if (value.length < 10) errors.push('Пароль слишком короткий')
-            return errors.length ? errors : undefined
-          },
-        }}
-      >
-        {(field) => (
-          <div className={styles['form__password']}>
-            <label className={styles['form__label']} htmlFor={field.name}>
-              Password
-            </label>
-            <input
-              className={styles['form__input']}
-              placeholder="Введите пароль"
-              id={field.name}
-              name={field.name}
-              value={field.state.value}
-              onChange={(e) => {
-                field.handleChange(e.target.value)
-              }}
-            />
-            <FormErrors errors={field.state.meta.errors} />
-          </div>
-        )}
-      </form.Field>
-      <button className={styles['form__button']}>{textButton}</button>
-      <Link className={styles['form__link']} to={URLLink}>
-        {textLink}
-      </Link>
+      <div className={styles['form__top']}>
+        <form.Field
+          name="email"
+          validators={{
+            onBlur: ({ value }) => validateEmail(value),
+          }}
+        >
+          {(field) => (
+            <div className={styles['form__name']}>
+              <label className={styles['form__label']} htmlFor={field.name}>
+                Email
+              </label>
+              <input
+                className={styles['form__input']}
+                placeholder="Введите Email"
+                id={field.name}
+                name={field.name}
+                value={field.state.value}
+                onBlur={field.handleBlur}
+                onChange={(e) => {
+                  field.handleChange(e.target.value)
+                }}
+              />
+              <FormErrors errors={field.state.meta.errors} />
+            </div>
+          )}
+        </form.Field>
+        <form.Field
+          name="password"
+          validators={{
+            onBlur: ({ value }) => validatePassword(value),
+          }}
+        >
+          {(field) => (
+            <div className={styles['form__password']}>
+              <label className={styles['form__label']} htmlFor={field.name}>
+                Password
+              </label>
+              <input
+                className={styles['form__input']}
+                placeholder="Введите пароль"
+                id={field.name}
+                name={field.name}
+                value={field.state.value}
+                onBlur={field.handleBlur}
+                onChange={(e) => {
+                  field.handleChange(e.target.value)
+                }}
+              />
+              <FormErrors errors={field.state.meta.errors} />
+            </div>
+          )}
+        </form.Field>
+      </div>
+      <div className={styles['form__bottom']}>
+        <button className={styles['form__button']}>{textButton}</button>
+        <Link className={styles['form__link']} to={URLLink}>
+          {textLink}
+        </Link>
+      </div>
     </form>
   )
 }

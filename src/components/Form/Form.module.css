@@ -1,40 +1,49 @@
 .form {
-  width: 350px;
-  height: 400px;
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 400px;
+  height: 500px;
+  padding: 25px;
   border-radius: 10px;
   background: #ff7878;
+}
+
+.form__top {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
+.form__bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
 }
 
 .form__name {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin: 20px 0 30px;
+  gap: 15px;
 }
 .form__password {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
 }
 
 .form__label {
   text-align: center;
+  font-size: 20px;
 }
 .form__input {
-  padding: 5px;
+  padding: 10px 10px;
   border-radius: 10px;
 }
 .form__button {
-  display: block;
   width: 200px;
   height: 50px;
   border: 1px solid #000;
   border-radius: 10px;
-  margin: 60px auto 10px;
-}
-
-.form__link {
-  display: block;
-  text-align: center;
 }
