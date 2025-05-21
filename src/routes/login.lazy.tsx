@@ -1,4 +1,4 @@
-import Form from '@/components/Form/Form'
+import { SignIn } from '@clerk/clerk-react'
 // eslint-disable-next-line import/order
 import { createLazyFileRoute } from '@tanstack/react-router'
 
@@ -7,11 +7,5 @@ export const Route = createLazyFileRoute('/login')({
 })
 
 function RouteComponent() {
-  return (
-    <Form
-      textButton={'Войти'}
-      textLink="Зарегистрироваться"
-      URLLink="/registration"
-    />
-  )
+  return <SignIn />
 }

@@ -1,26 +1,24 @@
 .root {
-  display: flex;
-  padding: 20px;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .root__nav {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  margin-right: 20px;
-  font-size: 20px;
+  width: 100%;
+  padding: 20px;
+  background-color: aqua;
 }
 
-.root__nav-bottom {
+.root__list {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  justify-content: space-between;
 }
 
 .root__outlet {
-  flex: 1;
+  height: 100%;
   display: flex;
+  flex: 1;
   justify-content: center;
   align-items: center;
 }

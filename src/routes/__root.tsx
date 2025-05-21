@@ -1,29 +1,43 @@
+import { UserButton, useAuth } from '@clerk/clerk-react'
 import { Link, Outlet, createRootRoute } from '@tanstack/react-router'
 import styles from '../styles/root.module.css'
 
-export const Route = createRootRoute({
-  component: () => (
+const RootComponent = () => {
+  const { isSignedIn } = useAuth()
+
+  return (
     <div className={styles['root']}>
-      <ul className={styles['root__nav']}>
-        <li className={styles['root__nav-top']}>
-          <Link to="/">TanStack Demo</Link>
-        </li>
-        <li className={styles['root__nav-center']}>
-          <Link to="/">Главная</Link>
-        </li>
-        <li className={styles['root__nav-bottom']}>
-          <Link to="/login" className={styles['root__nav-bottom']}>
-            Вход
-          </Link>
-          <Link to="/registration" className={styles['root__nav-bottom']}>
-            Регистрация
-          </Link>
-        </li>
-      </ul>
+      <nav className={styles['root__nav']}>
+        <ul className={styles['root__list']}>
+          <li className={styles['root__list-item']}>
+            <Link className={styles['root__list-link']} to="/">
+              Logo
+            </Link>
+          </li>
+          <li className={styles['root__list-item']}>
+            <Link className={styles['root__list-link']} to="/">
+              Главная
+            </Link>
+          </li>
+          <li className={styles['root__list-item']}>
+            {isSignedIn ? (
+              <UserButton />
+            ) : (
+              <Link className={styles['root__list-link']} to="/login">
+                Войти
+              </Link>
+            )}
+          </li>
+        </ul>
+      </nav>
       <div className={styles['root__outlet']}>
         <Outlet />
       </div>
       {/* <TanStackRouterDevtools /> */}
     </div>
-  ),
+  )
+}
+
+export const Route = createRootRoute({
+  component: RootComponent,
 })
