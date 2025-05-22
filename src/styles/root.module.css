@@ -4,21 +4,11 @@
   flex-direction: column;
 }
 
-.root__nav {
-  width: 100%;
-  padding: 20px;
-  background-color: aqua;
-}
-
-.root__list {
-  display: flex;
-  justify-content: space-between;
-}
-
 .root__outlet {
   height: 100%;
+  padding: 0 20px;
   display: flex;
-  flex: 1;
   justify-content: center;
   align-items: center;
+  flex: 1;
 }
