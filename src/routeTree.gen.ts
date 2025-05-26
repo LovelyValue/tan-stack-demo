@@ -13,6 +13,7 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as DndImport } from './routes/dnd'
 import { Route as IndexImport } from './routes/index'
 
 // Create Virtual Routes
@@ -34,6 +35,12 @@ const LoginLazyRoute = LoginLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/login.lazy').then((d) => d.Route))
 
+const DndRoute = DndImport.update({
+  id: '/dnd',
+  path: '/dnd',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
@@ -49,6 +56,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/dnd': {
+      id: '/dnd'
+      path: '/dnd'
+      fullPath: '/dnd'
+      preLoaderRoute: typeof DndImport
       parentRoute: typeof rootRoute
     }
     '/login': {
@@ -72,12 +86,14 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/dnd': typeof DndRoute
   '/login': typeof LoginLazyRoute
   '/registration': typeof RegistrationLazyRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/dnd': typeof DndRoute
   '/login': typeof LoginLazyRoute
   '/registration': typeof RegistrationLazyRoute
 }
@@ -85,27 +101,30 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/dnd': typeof DndRoute
   '/login': typeof LoginLazyRoute
   '/registration': typeof RegistrationLazyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/registration'
+  fullPaths: '/' | '/dnd' | '/login' | '/registration'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/registration'
-  id: '__root__' | '/' | '/login' | '/registration'
+  to: '/' | '/dnd' | '/login' | '/registration'
+  id: '__root__' | '/' | '/dnd' | '/login' | '/registration'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DndRoute: typeof DndRoute
   LoginLazyRoute: typeof LoginLazyRoute
   RegistrationLazyRoute: typeof RegistrationLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DndRoute: DndRoute,
   LoginLazyRoute: LoginLazyRoute,
   RegistrationLazyRoute: RegistrationLazyRoute,
 }
@@ -121,12 +140,16 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/dnd",
         "/login",
         "/registration"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/dnd": {
+      "filePath": "dnd.tsx"
     },
     "/login": {
       "filePath": "login.lazy.tsx"

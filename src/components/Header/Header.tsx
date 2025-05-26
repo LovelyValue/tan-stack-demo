@@ -19,6 +19,11 @@ const Header = () => {
             </Link>
           </li>
           <li className={styles['header__list-item']}>
+            <Link className={styles['header__list-link']} to="/dnd">
+              DND
+            </Link>
+          </li>
+          <li className={styles['header__list-item']}>
             {isSignedIn ? (
               <UserButton />
             ) : (
