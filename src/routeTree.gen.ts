@@ -18,16 +18,9 @@ import { Route as IndexImport } from './routes/index'
 
 // Create Virtual Routes
 
-const RegistrationLazyImport = createFileRoute('/registration')()
 const LoginLazyImport = createFileRoute('/login')()
 
 // Create/Update Routes
-
-const RegistrationLazyRoute = RegistrationLazyImport.update({
-  id: '/registration',
-  path: '/registration',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/registration.lazy').then((d) => d.Route))
 
 const LoginLazyRoute = LoginLazyImport.update({
   id: '/login',
@@ -72,13 +65,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginLazyImport
       parentRoute: typeof rootRoute
     }
-    '/registration': {
-      id: '/registration'
-      path: '/registration'
-      fullPath: '/registration'
-      preLoaderRoute: typeof RegistrationLazyImport
-      parentRoute: typeof rootRoute
-    }
   }
 }
 
@@ -88,14 +74,12 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dnd': typeof DndRoute
   '/login': typeof LoginLazyRoute
-  '/registration': typeof RegistrationLazyRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dnd': typeof DndRoute
   '/login': typeof LoginLazyRoute
-  '/registration': typeof RegistrationLazyRoute
 }
 
 export interface FileRoutesById {
@@ -103,15 +87,14 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/dnd': typeof DndRoute
   '/login': typeof LoginLazyRoute
-  '/registration': typeof RegistrationLazyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dnd' | '/login' | '/registration'
+  fullPaths: '/' | '/dnd' | '/login'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dnd' | '/login' | '/registration'
-  id: '__root__' | '/' | '/dnd' | '/login' | '/registration'
+  to: '/' | '/dnd' | '/login'
+  id: '__root__' | '/' | '/dnd' | '/login'
   fileRoutesById: FileRoutesById
 }
 
@@ -119,14 +102,12 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DndRoute: typeof DndRoute
   LoginLazyRoute: typeof LoginLazyRoute
-  RegistrationLazyRoute: typeof RegistrationLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DndRoute: DndRoute,
   LoginLazyRoute: LoginLazyRoute,
-  RegistrationLazyRoute: RegistrationLazyRoute,
 }
 
 export const routeTree = rootRoute
@@ -141,8 +122,7 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/dnd",
-        "/login",
-        "/registration"
+        "/login"
       ]
     },
     "/": {
@@ -153,9 +133,6 @@ export const routeTree = rootRoute
     },
     "/login": {
       "filePath": "login.lazy.tsx"
-    },
-    "/registration": {
-      "filePath": "registration.lazy.tsx"
     }
   }
 }

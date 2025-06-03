@@ -2,7 +2,12 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import styles from './Task.module.css'
 
-const Task = ({ id, title }) => {
+interface TaskProps {
+  id: number
+  title: string
+}
+
+const Task: React.FC<TaskProps> = ({ id, title }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id })
 

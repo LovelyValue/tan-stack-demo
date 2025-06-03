@@ -1,7 +1,11 @@
 import { useState } from 'react'
 import styles from './Input.module.css'
 
-const Input = ({ onSubmit }) => {
+interface InputProps {
+  onSubmit: (value: string) => void
+}
+
+const Input: React.FC<InputProps> = ({ onSubmit }) => {
   const [input, setInput] = useState('')
   const handleSubmit = () => {
     if (!input) return

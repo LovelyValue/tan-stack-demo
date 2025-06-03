@@ -1,6 +1,8 @@
+/* eslint-disable no-shadow */
 /* eslint-disable import/order */
 import Column from '@/components/Column/Column'
 import Input from '@/components/Input/Input'
+import type { DragEndEvent } from '@dnd-kit/core'
 import {
   DndContext,
   KeyboardSensor,
@@ -19,26 +21,33 @@ export const Route = createFileRoute('/dnd')({
   component: RouteComponent,
 })
 
+// Тип задачи
+interface Task {
+  id: number
+  title: string
+}
+
 function RouteComponent() {
-  const [tasks, setTasks] = useState([
+  const [tasks, setTasks] = useState<Array<Task>>([
     { id: 1, title: 'text 1' },
     { id: 2, title: 'text 2' },
     { id: 3, title: 'text 3' },
   ])
 
-  const addTask = (title) => {
+  const addTask = (title: string) => {
     setTasks((tasks) => [...tasks, { id: tasks.length + 1, title }])
   }
 
-  const getTaskPos = (id) => tasks.findIndex((task) => task.id === id)
+  const getTaskPos = (id: number | string) =>
+    tasks.findIndex((task) => task.id === Number(id))
 
-  const handleDragEnd = (e) => {
+  const handleDragEnd = (e: DragEndEvent) => {
     const { active, over } = e
-    if (active.id === over.id) return
+    if (!over || active.id === over.id) return
+
     setTasks((tasks) => {
       const originalPos = getTaskPos(active.id)
       const newPos = getTaskPos(over.id)
-
       return arrayMove(tasks, originalPos, newPos)
     })
   }
