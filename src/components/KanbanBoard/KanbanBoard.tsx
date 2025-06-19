@@ -1,6 +1,6 @@
 /* eslint-disable sort-imports */
 /* eslint-disable import/order */
-import type { Column, Id } from '@/types/types'
+import type { Column, Id, Task } from '@/types/types'
 import type { DragEndEvent, DragStartEvent } from '@dnd-kit/core'
 import {
   DndContext,
@@ -18,6 +18,7 @@ import styles from './KanbanBoard.module.css'
 function KanbanBoard() {
   const [columns, setColumns] = useState<Array<Column>>([])
   const columnsId = useMemo(() => columns.map((col) => col.id), [columns])
+  const [tasks, setTasks] = useState<Array<Task>>([])
 
   const [activeColumn, setActiveColumn] = useState<Column | null>(null)
 
@@ -45,6 +46,8 @@ function KanbanBoard() {
                   column={col}
                   deleteColumn={deleteColumn}
                   updateColumn={updateColumn}
+                  createTask={createTask}
+                  tasks={tasks.filter((task) => task.columnId === col.id)}
                 />
               ))}
             </SortableContext>
@@ -70,6 +73,8 @@ function KanbanBoard() {
                 column={activeColumn}
                 deleteColumn={deleteColumn}
                 updateColumn={updateColumn}
+                createTask={createTask}
+                tasks={[]}
               />
             )}
           </DragOverlay>,
@@ -78,6 +83,15 @@ function KanbanBoard() {
       </DndContext>
     </div>
   )
+
+  function createTask(columnId: Id) {
+    const newTask: Task = {
+      id: generatedId(),
+      columnId,
+      content: `Task ${tasks.length + 1}`,
+    }
+    setTasks([...tasks, newTask])
+  }
 
   function createNewColumn() {
     const columnToAdd: Column = {

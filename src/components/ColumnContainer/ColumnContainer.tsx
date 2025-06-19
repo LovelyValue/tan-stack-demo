@@ -1,18 +1,21 @@
 /* eslint-disable import/order */
-import type { Column, Id } from '@/types/types'
+import type { Column, Id, Task } from '@/types/types'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { useState } from 'react'
+import TaskCard from '../TaskCard/TaskCard'
 import styles from './ColumnContainer.module.css'
 
 interface Props {
   column: Column
   deleteColumn: (id: Id) => void
   updateColumn: (id: Id, title: string) => void
+  createTask: (columnId: Id) => void
+  tasks: Array<Task>
 }
 
 function ColumnContainer(props: Props) {
-  const { column, deleteColumn, updateColumn } = props
+  const { column, deleteColumn, updateColumn, createTask, tasks } = props
 
   const [editMod, setEditMod] = useState(false)
 
@@ -76,7 +79,7 @@ function ColumnContainer(props: Props) {
           )}
         </div>
         <button
-          className={styles['column__button']}
+          className={styles['column__button-delete']}
           onClick={() => {
             deleteColumn(column.id)
           }}
@@ -88,8 +91,24 @@ function ColumnContainer(props: Props) {
           />
         </button>
       </div>
-      <div className={styles['column__content']}>Content</div>
-      <div className={styles['column__footer']}>Footer</div>
+      <div className={styles['column__content']}>
+        {tasks.map((task) => (
+          <TaskCard key={task.id} task={task} />
+        ))}
+      </div>
+      <button
+        className={styles['column__button-add']}
+        onClick={() => {
+          createTask(column.id)
+        }}
+      >
+        <img
+          className={styles['column__button-img']}
+          src="public\icon\PlusIcon.svg"
+          alt="add"
+        />
+        Add Task
+      </button>
     </div>
   )
 }
