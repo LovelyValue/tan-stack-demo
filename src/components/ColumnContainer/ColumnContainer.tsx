@@ -11,11 +11,21 @@ interface Props {
   deleteColumn: (id: Id) => void
   updateColumn: (id: Id, title: string) => void
   createTask: (columnId: Id) => void
+  deleteTask: (id: Id) => void
+  updateTask: (id: Id, content: string) => void
   tasks: Array<Task>
 }
 
 function ColumnContainer(props: Props) {
-  const { column, deleteColumn, updateColumn, createTask, tasks } = props
+  const {
+    column,
+    deleteColumn,
+    updateColumn,
+    createTask,
+    tasks,
+    deleteTask,
+    updateTask,
+  } = props
 
   const [editMod, setEditMod] = useState(false)
 
@@ -93,7 +103,12 @@ function ColumnContainer(props: Props) {
       </div>
       <div className={styles['column__content']}>
         {tasks.map((task) => (
-          <TaskCard key={task.id} task={task} />
+          <TaskCard
+            key={task.id}
+            task={task}
+            deleteTask={deleteTask}
+            updateTask={updateTask}
+          />
         ))}
       </div>
       <button
