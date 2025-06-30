@@ -1,7 +1,7 @@
 /* eslint-disable sort-imports */
 /* eslint-disable import/order */
 import type { Column, Id, Task } from '@/types/types'
-import type { DragEndEvent, DragStartEvent } from '@dnd-kit/core'
+import type { DragEndEvent, DragOverEvent, DragStartEvent } from '@dnd-kit/core'
 import {
   DndContext,
   DragOverlay,
@@ -13,6 +13,7 @@ import { arrayMove, SortableContext } from '@dnd-kit/sortable'
 import { useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
 import ColumnContainer from '../ColumnContainer/ColumnContainer'
+import TaskCard from '../TaskCard/TaskCard'
 import styles from './KanbanBoard.module.css'
 
 function KanbanBoard() {
@@ -21,6 +22,7 @@ function KanbanBoard() {
   const [tasks, setTasks] = useState<Array<Task>>([])
 
   const [activeColumn, setActiveColumn] = useState<Column | null>(null)
+  const [activeTask, setActiveTask] = useState<Task | null>(null)
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -36,6 +38,7 @@ function KanbanBoard() {
         sensors={sensors}
         onDragStart={onDragStart}
         onDragEnd={onDragEnd}
+        onDragOver={onDragOver}
       >
         <div className={styles['board__inner???']}>
           <div className={styles['board__columns']}>
@@ -83,6 +86,13 @@ function KanbanBoard() {
                 )}
               />
             )}
+            {activeTask && (
+              <TaskCard
+                task={activeTask}
+                updateTask={updateTask}
+                deleteTask={deleteTask}
+              />
+            )}
           </DragOverlay>,
           document.body,
         )}
@@ -111,7 +121,7 @@ function KanbanBoard() {
   function createNewColumn() {
     const columnToAdd: Column = {
       id: generatedId(),
-      title: `Column ${columns.length + 1}`,
+      title: ` ${columns.length + 1}`,
     }
 
     setColumns([...columns, columnToAdd])
@@ -124,7 +134,11 @@ function KanbanBoard() {
   function deleteColumn(id: Id) {
     const filteredColumns = columns.filter((col) => col.id !== id)
     setColumns(filteredColumns)
+
+    const newTasks = tasks.filter((t) => t.columnId !== id)
+    setTasks(newTasks)
   }
+
   function deleteTask(id: Id) {
     const newTask = tasks.filter((task) => task.id !== id)
     setTasks(newTask)
@@ -144,9 +158,15 @@ function KanbanBoard() {
       setActiveColumn(event.active.data.current.column)
       return
     }
+    if (event.active.data.current?.type === 'Task') {
+      setActiveTask(event.active.data.current.task)
+      return
+    }
   }
 
   function onDragEnd(event: DragEndEvent) {
+    setActiveColumn(null)
+    setActiveTask(null)
     const { active, over } = event
 
     if (!over) return
@@ -167,6 +187,45 @@ function KanbanBoard() {
 
       return arrayMove(columns, activeColumnIndex, overColumnIndex)
     })
+  }
+
+  function onDragOver(event: DragOverEvent) {
+    const { active, over } = event
+
+    if (!over) return
+
+    const activeId = active.id
+    const overId = over.id
+
+    if (activeId == overId) return
+
+    const isActiveATask = active.data.current?.type === 'Task'
+    const isOverATask = over.data.current?.type === 'Task'
+
+    if (!isActiveATask) return
+
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (isActiveATask && isOverATask) {
+      setTasks((tasks) => {
+        const activeIndex = tasks.findIndex((t) => t.id === activeId)
+        const overIndex = tasks.findIndex((t) => t.id === overId)
+
+        tasks[activeIndex].columnId = tasks[overIndex].columnId
+        return arrayMove(tasks, activeIndex, overIndex)
+      })
+    }
+
+    const isOverAColumn = over.data.current?.type === 'Column'
+
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (isOverAColumn && isActiveATask) {
+      setTasks((tasks) => {
+        const activeIndex = tasks.findIndex((t) => t.id === activeId)
+
+        tasks[activeIndex].columnId = overId
+        return arrayMove(tasks, activeIndex, activeIndex)
+      })
+    }
   }
 }
 

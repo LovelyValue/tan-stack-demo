@@ -1,10 +1,41 @@
 .task__card {
   width: 100%;
-  height: 100px;
+  min-height: 100px;
+  padding: 10px;
   border: 2px solid #000;
   border-radius: 5px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   background-color: #3254dc;
+}
+
+.task__card-content {
+  height: 100%;
+  align-self: flex-start;
+  padding-right: 10px;
+  overflow-wrap: break-word;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.task__card-area {
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+}
+
+.task__card-button {
+  align-self: flex-end;
+  margin-left: 10px;
+}
+
+.task__card-active {
+  width: 100%;
+  height: 100px;
+  background-color: #3254dc;
+  opacity: 0.9;
+  border: 2px solid #b60000;
+  border-radius: 5px;
+  opacity: 0.9;
 }

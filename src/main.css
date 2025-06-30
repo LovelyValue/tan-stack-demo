@@ -22,6 +22,7 @@ textarea,
 select {
   font: inherit;
   border: none;
+  outline: none;
 }
 
 /* 4. Убираем стандартное оформление ссылок */

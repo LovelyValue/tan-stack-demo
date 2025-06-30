@@ -1,8 +1,8 @@
 /* eslint-disable import/order */
 import type { Column, Id, Task } from '@/types/types'
-import { useSortable } from '@dnd-kit/sortable'
+import { SortableContext, useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import TaskCard from '../TaskCard/TaskCard'
 import styles from './ColumnContainer.module.css'
 
@@ -29,6 +29,10 @@ function ColumnContainer(props: Props) {
 
   const [editMod, setEditMod] = useState(false)
 
+  const tasksIds = useMemo(() => {
+    return tasks.map((task) => task.id)
+  }, [tasks])
+
   const {
     setNodeRef,
     attributes,
@@ -44,6 +48,7 @@ function ColumnContainer(props: Props) {
     },
     disabled: editMod,
   })
+
   const style = {
     transition,
     transform: CSS.Transform.toString(transform),
@@ -69,9 +74,9 @@ function ColumnContainer(props: Props) {
           setEditMod(true)
         }}
       >
-        <div className={styles['column__number']}>0</div>
+        <div className={styles['column__number']}>{column.title}</div>
         <div className={styles['column__title']}>
-          {!editMod && column.title}
+          {!editMod && `Column ${column.title}`}
           {editMod && (
             <input
               className={styles['column__title-input']}
@@ -102,14 +107,16 @@ function ColumnContainer(props: Props) {
         </button>
       </div>
       <div className={styles['column__content']}>
-        {tasks.map((task) => (
-          <TaskCard
-            key={task.id}
-            task={task}
-            deleteTask={deleteTask}
-            updateTask={updateTask}
-          />
-        ))}
+        <SortableContext items={tasksIds}>
+          {tasks.map((task) => (
+            <TaskCard
+              key={task.id}
+              task={task}
+              deleteTask={deleteTask}
+              updateTask={updateTask}
+            />
+          ))}
+        </SortableContext>
       </div>
       <button
         className={styles['column__button-add']}
